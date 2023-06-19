@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    container_name: my-mysql-container
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_USER: toto
+      MYSQL_PASSWORD: toto
+      MYSQL_DATABASE: testdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+  backend:
+    image: yohanengineer/backend-thesis:1.0.0-arm64
+    ports:
+      - 1993:1993
+    depends_on:
+      - db
+
+  frontend:
+    image: yohanengineer/frontend-thesis:1.0.0-arm64
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
