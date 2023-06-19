@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.episen.backend;
 
 import jakarta.persistence.*;
 import lombok.Data;

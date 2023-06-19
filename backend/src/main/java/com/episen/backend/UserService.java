@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.episen.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
