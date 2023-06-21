@@ -29,7 +29,7 @@ function addUser(name, email) {
 
 function updateUser(id, name, email) {
     $.ajax({
-        url: '/api/users/',
+        url: '/api/users',
         type: 'PUT',
         data: JSON.stringify({ id: id, name: name, email: email }),
         contentType: "application/json; charset=utf-8",
