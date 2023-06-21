@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1>User Management</h1>
+        <div id="userForm">
+            <input type="text" id="userName" class="form-control" placeholder="Name" />
+            <input type="text" id="userEmail" class="form-control mt-2" placeholder="Email" />
+            <input type="text" id="userId" class="form-control d-none" placeholder="User ID (for update)" />
+            <select id="actionSelect" class="form-control mt-2">
+                <option value="add">Add</option>
+                <option value="update">Update</option>
+            </select>
+            <button id="submitUser" class="btn btn-primary mt-2">Submit</button>
+        </div>
+        <div id="userList"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
