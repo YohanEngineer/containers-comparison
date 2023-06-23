@@ -16,6 +16,7 @@ services:
 
   backend:
     image: yohanengineer/backend-thesis:1.0.0-arm64
+    container_name: backend
     ports:
       - 1993:1993
     depends_on:
@@ -23,6 +24,7 @@ services:
 
   frontend:
     image: yohanengineer/frontend-thesis:1.0.0-arm64
+    container_name: frontend
     ports:
       - 3000:3000
     depends_on:
