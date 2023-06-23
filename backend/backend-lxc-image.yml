@@ -1,0 +1,31 @@
+image:
+  distribution: "ubuntu"
+  release: "focal"
+  description: "Ubuntu Focal"
+  architecture: "arm64"
+
+source:
+  downloader: debootstrap
+  url: "http://ports.ubuntu.com/ubuntu-ports"
+
+packages:
+  manager: "apt"
+  update: true
+  cleanup: true
+  sets:
+  - action: install
+    packages:
+    - tar
+    - gzip
+    - ca-certificates
+    - curl
+
+actions:
+  - trigger: post-update
+    action: |-
+      curl -L -o corretto.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-17-aarch64-linux-jdk.tar.gz
+      tar -xf corretto.tar.gz -C /opt/
+      rm corretto.tar.gz
+      ln -sfn /opt/amazon-corretto-17* /opt/jdk
+      alternatives --install /usr/bin/java java /opt/jdk/bin/java 20000
+      mkdir -p /app
