@@ -2,7 +2,8 @@
 
 # Lancement de docker-compose
 echo "Lancement du service frontend..."
-docker-compose up -f compose-arm.yaml -d frontend
+docker rm -f frontend
+docker-compose  -f /home/toto/containers-comparison/compose-arm.yml up -d frontend
 
 # Initialisation du temps
 start_time=$(date +%s)

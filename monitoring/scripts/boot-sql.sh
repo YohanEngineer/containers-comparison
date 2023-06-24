@@ -2,7 +2,8 @@
 
 # Lancement de docker-compose
 echo "Lancement du service MySQL..."
-docker-compose up -f compose-arm.yaml -d db
+docker-compose -f /home/toto/containers-comparison/compose-arm.yml down
+docker-compose -f /home/toto/containers-comparison/compose-arm.yml up -d db
 
 # Initialisation du temps
 start_time=$(date +%s)
@@ -10,13 +11,15 @@ start_time=$(date +%s)
 # Attente de la disponibilité de MySQL
 echo "Attente de la disponibilité du service MySQL..."
 while true; do
-    if docker-compose exec -T mysql mysqladmin ping --silent; then
+    if docker exec my-mysql-container mysql -p'toto' -e 'select 1' > /dev/null 2>&1; then
         break
     else
+        echo 'Not ready'
         # Pause avant de réessayer
         sleep 1
     fi
 done
+
 
 # Calcul du temps écoulé
 end_time=$(date +%s)

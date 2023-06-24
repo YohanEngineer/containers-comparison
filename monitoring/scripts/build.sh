@@ -16,7 +16,7 @@ dockerfile_path=$2
 echo "Construction de l'image Docker..."
 start_time=$(date +%s)
 
-docker build -t $image_name $dockerfile_path
+docker buildx build --no-cache --platform linux/arm64 -t $image_name $dockerfile_path
 
 end_time=$(date +%s)
 

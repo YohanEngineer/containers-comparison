@@ -1,0 +1,14 @@
+# Dockerfile
+FROM mysql:8
+
+# Configurer MySQL
+ENV MYSQL_ROOT_PASSWORD=toto
+ENV MYSQL_USER=toto
+ENV MYSQL_PASSWORD=toto
+ENV MYSQL_DATABASE=testdb
+
+# Ajouter le script SQL à l'image Docker
+ADD init.sql /docker-entrypoint-initdb.d
+
+# Exposer le port
+EXPOSE 3306
