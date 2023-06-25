@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nombre de tests
-NUM_TESTS=100
+NUM_TESTS=5
 
 # Container 3 (MySQL)
 CONTAINER3_IP=localhost
