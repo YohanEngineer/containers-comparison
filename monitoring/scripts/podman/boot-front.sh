@@ -3,7 +3,7 @@
 # Lancement de podman-compose
 echo "Lancement du service frontend..."
 podman rm -f frontend
-podman-compose  -f /home/toto/containers-comparison/compose.yml up -d frontend
+podman-compose  -f /home/toto/containers-comparison/compose-pod.yml up -d frontend
 
 # Initialisation du temps
 start_time=$(date +%s)

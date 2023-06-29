@@ -2,8 +2,8 @@
 
 # Lancement de podman-compose
 echo "Lancement du service MySQL..."
-podman-compose -f /home/toto/containers-comparison/compose.yml down
-podman-compose -f /home/toto/containers-comparison/compose.yml up -d db
+podman-compose -f /home/toto/containers-comparison/compose-pod.yml down
+podman-compose -f /home/toto/containers-comparison/compose-pod.yml up -d db
 
 # Initialisation du temps
 start_time=$(date +%s)
