@@ -2,8 +2,8 @@
 
 # Lancement de docker-compose
 echo "Lancement du service MySQL..."
-docker-compose -f /home/toto/containers-comparison/compose.yml down
-docker-compose -f /home/toto/containers-comparison/compose.yml up -d db
+docker-compose -f /home/toto/containers-comparison/compose-arm.yml down
+docker-compose -f /home/toto/containers-comparison/compose-arm.yml up -d db
 
 # Initialisation du temps
 start_time=$(date +%s)
