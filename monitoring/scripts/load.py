@@ -6,10 +6,10 @@ import faker
 fake = faker.Faker()
 
 # URL de l'API
-url = "http://192.168.1.175:1993/users"
+url = "http://localhost:1993/users"
 
 # Combien d'utilisateurs vous voulez créer
-num_users = 10000
+num_users = 50000
 
 # Création d'une tâche asynchrone pour effectuer une requête POST
 async def create_user(session, url, name, email):
