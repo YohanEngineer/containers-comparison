@@ -231,10 +231,68 @@ sh monitoring/scripts/lxc/latency.sh
 
 ## Podman 🦦
 
+### Installation de Podman
+
+Pour installer Podman sur Ubuntu, suivez les instructions officielles [ici](https://podman.io/getting-started/installation).
+
+Sur ARM64, il faut installer Podman avec la commande suivante:
+
+```shell
+sh install-podman.sh
+```
 ### Construction des images Podman
 
+La construction des images avec Podman est très similaire à celle de Docker, pour cause l'outil Podman est un fork de Docker. La seule différence est qu'il faut utiliser la commande `podman` au lieu de `docker`.
+
+On a aussi créé des fichiers Containerfile pour chaque application. Ces fichiers sont similaires aux Dockerfile mais avec une syntaxe légèrement différente. Voici un exemple de `Containerfile` avec le backend:
+
+```dockerfile
+FROM docker.io/amazoncorretto:17
+WORKDIR /app
+COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```	
+
+La seule différence avec le Dockerfile est la première ligne qui indique l'image de base à utiliser. En effet, il faut préciser le registre d'image utilisé.
 ### Démarrage des conteneurs
 
+En ce qui concerne le démarrage des conteneurs on utilise [`podman-compose`](https://github.com/containers/podman-compose) qui est l'équivalent de `docker-compose` pour Podman. On se place à la racine du projet puis on lance la commande suivante pour démarrer les conteneurs:
+
+```shell
+podman-compose -f compose-pod.yml up --detach
+```
+
+ou
+
+```shell
+podman-compose -f compose-pod-arm.yml up --detach
+```
+
+selon l'architecture utilisée.
+
 ### Benchmarking
+
+*Toutes ces commandes sont réalisées en étant à la racine du projet.*
+
+Pour mesurer le temps de construction d'une image Podman, On utilise le script [`build-podman.sh`](https://github.com/YohanEngineer/containers-comparison/blob/main/monitoring/scripts/podman/build-podman.sh) qui permet de construire les images en indiquant le nom de l'image et le chemin du Containerfile. On lance donc la commande suivante pour construire l'image du backend par exemple:
+
+```shell
+sh monitoring/scripts/podman/ build-podman.sh yohanengineer/backend-thesis:1.0.0 backend/Containerfile
+```
+
+
+Pour mesurer le temps de démarrage d'un conteneur Podman, on utilise les scripts suivants (boot-backend.sh, boot-front.sh, boot-sql.sh). On lancera donc la commande suivante pour le backend par exemple :
+
+```shell
+sh monitoring/scripts/podman/boot-backend.sh
+```
+
+Pour mesurer la latence des trois applications, on utilise la commande suivante:
+
+```shell
+sh monitoring/scripts/podman/latency.sh
+```
+
+
 
 ## Benchmarking avec cAdvisor, Prometheus et Grafana 
