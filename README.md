@@ -277,7 +277,7 @@ selon l'architecture utilisée.
 Pour mesurer le temps de construction d'une image Podman, On utilise le script [`build-podman.sh`](https://github.com/YohanEngineer/containers-comparison/blob/main/monitoring/scripts/podman/build-podman.sh) qui permet de construire les images en indiquant le nom de l'image et le chemin du Containerfile. On lance donc la commande suivante pour construire l'image du backend par exemple:
 
 ```shell
-sh monitoring/scripts/podman/ build-podman.sh yohanengineer/backend-thesis:1.0.0 backend/Containerfile
+sh monitoring/scripts/podman/build-podman.sh yohanengineer/backend-thesis:1.0.0 backend/Containerfile
 ```
 
 
@@ -295,4 +295,71 @@ sh monitoring/scripts/podman/latency.sh
 
 
 
-## Benchmarking avec cAdvisor, Prometheus et Grafana 
+## Benchmarking des performances
+
+Les mesures de performances CPU et mémoire ont été réalisées à l'aide de cAdvisor, Prometheus et Grafana.
+
+### Installation de cAdvisor
+
+cAdvisor est installée sur la machine hôte.
+
+Pour installer cAdvisor, on va sur la page de [release](https://github.com/google/cadvisor/releases) Github du projet pour télécharger les binaires.
+
+On peut ensuite lancer cAdvisor avec la commande suivante:
+
+```shell
+sudo ./cadvisor
+```
+
+Pour accéder à l'interface web de cAdvisor, il faut se rendre sur l'adresse suivante: http://localhost:8080
+
+### Installation de Prometheus et Grafana
+
+Prometheus et Grafana sont installés dans un conteneur Docker sur une autre machine que la machine de test.
+
+Pour installer Prometheus et Grafana, on va utiliser Docker. On se place à la racine du projet puis on lance la commande suivante:
+
+```shell
+docker-compose -f monitoring/compose.yml up --detach
+```
+
+Dans le dossier monitoring/docker/prometheus se trouve la configuration pour scraper les données exposées par cAdvisor.
+
+La marche à suivre pour utiliser Grafana est explicitée sur ce [site](https://blog.eleven-labs.com/fr/monitorer-ses-containers-docker/).
+
+### Charge du système
+
+Afin de charger le système et de pouvoir observer les performances, on utilise jmeter. 
+
+La procédure d'installation est disponible [ici](https://jmeter.apache.org/usermanual/get-started.html#running).
+
+On charge ensuite les conteneurs en envoyant des milliers de requêtes de manière simultanée.
+
+Une autre manière de faire est d'utiliser le script load.py qui permet de lancer des requêtes en parallèle. Pour l'utiliser, il faut lancer la commande suivante:
+
+```shell
+python3 monitoring/scripts/load.py
+```
+
+### IOPS 
+
+Pour mesurer les performances d'IOPS, on utilise l'outil fio qu'il faut installer en se connectant directement dans les conteneurs. 
+
+Pour installer fio, on lance les commandes suivantes:
+
+```shell
+sudo apt-get update
+sudo apt-get install fio
+```
+
+On peut ensuite lancer les tests avec la commande suivante:
+
+#### Ecriture
+```shell
+fio --name=writefile --size=2G --filesize=2G --ioengine=libaio --rw=write --bs=1M --numjobs=1 --time_based --runtime=30s --end_fsync=1
+```
+#### Lecture
+
+```shell
+fio --name=readfile --size=2G --filesize=2G --ioengine=libaio --rw=read --bs=1M --numjobs=1 --time_based --runtime=30s --end_fsync=1
+```
